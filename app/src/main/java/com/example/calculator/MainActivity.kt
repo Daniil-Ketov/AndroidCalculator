@@ -134,9 +134,7 @@ class MainActivity : AppCompatActivity() {
             }
             "÷" -> {
                 if (tvCurr.text.toString().toDouble() == 0.0) {
-                    Toast.makeText(this@MainActivity, "Divide by zero error!!!", Toast.LENGTH_SHORT)
-                        .show()
-                    return
+                    throw java.lang.Exception("Divide by zero exception")
                 }
                 tvCurr.setText((tvPrev.text.toString().toDouble() / tvCurr.text.toString().toDouble()).toString())
             }
@@ -159,8 +157,16 @@ class MainActivity : AppCompatActivity() {
             tvOp.text = op
             return
         }
-        calculate()
-        tvOp.text = op
+        try {
+            calculate()
+            tvOp.text = op
+            tvPrev.text = tvCurr.text
+            tvCurr.setText("")
+        }
+        catch (e: java.lang.Exception) {
+            Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT)
+                .show()
+        }
     }
 
     private fun delete() {
