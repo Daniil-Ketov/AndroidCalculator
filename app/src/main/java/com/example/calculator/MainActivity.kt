@@ -79,7 +79,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         buttonResult.setOnClickListener {
-            calculate()
+            try {
+                calculate()
+            }
+            catch (e: java.lang.Exception) {
+                Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
 
         buttonDelete.setOnClickListener {
@@ -122,6 +128,12 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun calculate() {
+        if (tvCurr.text.toString() == "") {
+            tvCurr.setText(tvPrev.text)
+            tvOp.text = ""
+            tvPrev.text = ""
+            return
+        }
         when (tvOp.text) {
             "+" -> {
                 tvCurr.setText((tvPrev.text.toString().toDouble() + tvCurr.text.toString().toDouble()).toString())
@@ -157,6 +169,7 @@ class MainActivity : AppCompatActivity() {
             tvOp.text = op
             return
         }
+
         try {
             calculate()
             tvOp.text = op
